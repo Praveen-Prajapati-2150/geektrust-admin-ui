@@ -1,3 +1,4 @@
+'use client';
 import Image from 'next/image';
 import AdminUI from './admin-ui';
 
