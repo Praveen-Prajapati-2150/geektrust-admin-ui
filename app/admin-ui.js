@@ -93,22 +93,14 @@ export default function AdminUI() {
   const handleFieldUpdate = (e, id) => {
     const { name, value } = e.target;
 
-    console.log(name, value);
-
     setUpdateData({ ...updateData, [name]: value });
   };
 
   const fillTheUpdateState = (user) => {
-    console.log(user);
     setUpdateData(user);
   };
 
-  // console.log(data);
-  // console.log(updateData);
-
   const handleSaveChanges = (userId) => {
-    console.log({ userId });
-
     setData((prevData) =>
       prevData?.map((user) => {
         if (user.id === updateData.id) {
@@ -155,10 +147,6 @@ export default function AdminUI() {
     setData(res);
   }, [limit, usersData]);
 
-  //   console.log(data);
-  //   console.log(usersData);
-  //   console.log(paginationButton);
-
   useEffect(() => {
     fetchUsers();
 
@@ -196,17 +184,17 @@ export default function AdminUI() {
               <TableHead>Actions</TableHead>
             </TableRow>
           </TableHeader>
-          <TableBody>
-            {/* {data &&
+          {data.length === 0 &&
             Array(10)
               .fill()
               .map((item, index) => {
                 return (
-                  <TableRow key={index}>
-                    <Skeleton className="h-[45px] w-lvw " />
-                  </TableRow>
+                  // <TableRow key={index}>
+                  <Skeleton key={index} className="h-[55px] w-lvw mt-5 " />
+                  // </TableRow>
                 );
-              })} */}
+              })}
+          <TableBody>
             {data?.map((user, index) => {
               if (user?.name.toLowerCase().includes(searchQuery.toLowerCase()))
                 return (
