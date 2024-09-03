@@ -199,10 +199,13 @@ export default function AdminUI() {
               if (
                 user?.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                 user?.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                user?.role.toLowerCase().includes(searchQuery.toLowerCase()) 
+                user?.role.toLowerCase().includes(searchQuery.toLowerCase())
               )
                 return (
-                  <TableRow key={index}>
+                  <TableRow
+                    className={`${user.checked ? 'bg-gray-200' : ''}`}
+                    key={index}
+                  >
                     <TableCell>
                       <Checkbox
                         checked={user.checked}
