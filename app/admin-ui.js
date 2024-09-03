@@ -197,6 +197,7 @@ export default function AdminUI() {
           <TableBody>
             {data?.map((user, index) => {
               if (
+                user?.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
                 user?.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                 user?.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
                 user?.role.toLowerCase().includes(searchQuery.toLowerCase())
