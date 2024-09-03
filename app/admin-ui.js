@@ -39,12 +39,9 @@ export default function AdminUI() {
   const [searchQuery, setSearchQuery] = useState('');
   const [paginationButton, setPaginationButton] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
-  const [updateData, setUpdateData] = useState({
-    name: '',
-    email: '',
-    role: '',
-  });
+  const [updateData, setUpdateData] = useState({});
   const [selectData, setSelectData] = useState(false);
+  const [pageIndex, setPageIndex] = useState(0);
 
   const fetchUsers = async () => {
     const response = await fetch(
@@ -55,6 +52,9 @@ export default function AdminUI() {
   };
 
   const handleLimit = (page) => {
+    console.log({ page });
+    console.log(Math.ceil(usersData.length / 10));
+    setPageIndex(page);
     setPage(page + 1);
     setLimit(page * 10 + 1);
     setSelectData(false);
@@ -184,7 +184,7 @@ export default function AdminUI() {
               <TableHead>Actions</TableHead>
             </TableRow>
           </TableHeader>
-          {data.length === 0 &&
+          {/* {data.length === 0 &&
             Array(10)
               .fill()
               .map((item, index) => {
@@ -193,10 +193,14 @@ export default function AdminUI() {
                   <Skeleton key={index} className="h-[55px] w-lvw mt-5 " />
                   // </TableRow>
                 );
-              })}
+              })} */}
           <TableBody>
             {data?.map((user, index) => {
-              if (user?.name.toLowerCase().includes(searchQuery.toLowerCase()))
+              if (
+                user?.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                user?.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                user?.role.toLowerCase().includes(searchQuery.toLowerCase()) 
+              )
                 return (
                   <TableRow key={index}>
                     <TableCell>
@@ -308,11 +312,21 @@ export default function AdminUI() {
             Delete Selected
           </Button>
           <div className="flex items-center space-x-2">
-            <Button variant="outline" size="icon">
+            <Button
+              variant="outline"
+              size="icon"
+              disabled={pageIndex <= 0}
+              onClick={() => handleLimit(0)}
+            >
               <ChevronLeftIcon className="w-4 h-4" />
               <ChevronLeftIcon className="w-4 h-4" />
             </Button>
-            <Button variant="outline" size="icon">
+            <Button
+              variant="outline"
+              size="icon"
+              disabled={pageIndex <= 0}
+              onClick={() => handleLimit(pageIndex - 1)}
+            >
               <ChevronLeftIcon className="w-4 h-4" />
             </Button>
             {paginationButton?.map((item, index) => (
@@ -325,10 +339,20 @@ export default function AdminUI() {
                 {item}
               </Button>
             ))}
-            <Button variant="outline" size="icon">
+            <Button
+              variant="outline"
+              size="icon"
+              disabled={pageIndex + 1 >= Math.ceil(usersData.length / 10)}
+              onClick={() => handleLimit(pageIndex + 1)}
+            >
               <ChevronRightIcon className="w-4 h-4" />
             </Button>
-            <Button variant="outline" size="icon">
+            <Button
+              variant="outline"
+              size="icon"
+              disabled={pageIndex + 1 >= Math.ceil(usersData.length / 10)}
+              onClick={() => handleLimit(Math.ceil(usersData.length / 10) - 1)}
+            >
               <ChevronRightIcon className="w-4 h-4" />
               <ChevronRightIcon className="w-4 h-4" />
             </Button>
